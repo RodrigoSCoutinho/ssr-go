@@ -1,7 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"net/http"
+	"text/template"
+)
+
+var temp = template.Must(template.ParseGlob("templates/*.html"))
 
 func main() {
-	fmt.Println("Hello World")
+	http.HandleFunc("/", index)
+	http.ListenAndServe(":8000", nil)
+}
+
+func index(w http.ResponseWriter, r *http.Request) {
+	temp.ExecuteTemplate(w, "Index", nil)
 }
